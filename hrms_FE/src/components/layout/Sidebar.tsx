@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { Star, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import { UpstarsLogo } from '../brand/UpstarsLogo';
 import { useAuth } from '../../context/AuthContext';
 import { cn } from '../../lib/cn';
 import { NAV, type NavLinkItem } from './navConfig';
@@ -71,14 +72,8 @@ function SidebarContent({ onNavigate }: { onNavigate: () => void }) {
 
 function Brand() {
   return (
-    <div className="flex items-center gap-2 px-5 py-4">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold text-navy">
-        <Star className="h-4 w-4 fill-navy" aria-hidden />
-      </span>
-      <div className="leading-tight">
-        <p className="text-sm font-semibold text-white">UPstars</p>
-        <p className="text-[11px] uppercase tracking-wider text-navy-200">HRMS</p>
-      </div>
+    <div className="px-4 py-4">
+      <UpstarsLogo size="sm" withWordmark light />
     </div>
   );
 }
