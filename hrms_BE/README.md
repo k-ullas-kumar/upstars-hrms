@@ -24,21 +24,21 @@ With `DATABASE_URL` empty the API uses `./data/hrms.sqlite`. Set a real
 
 ## Demo logins
 
-Tenant: **UPstars Demo** (`upstars-demo`, Asia/Kolkata). Password for every user: **`Admin@12345`**
+Tenant: **UPstars Demo** (`upstars-demo`, Asia/Kolkata). Password for every user: **`Ullas@Intern`**
 
 | Email | Role | Notes |
 |---|---|---|
-| `admin@upstars.local` | COMPANY_ADMIN | EMP-004, full tenant access |
-| `hr@upstars.local` | HR_MANAGER | EMP-003 |
-| `manager@upstars.local` | MANAGER | EMP-002, manages EMP-001 |
-| `employee@upstars.local` | EMPLOYEE | EMP-001, holds the assigned phone |
-| `assets@upstars.local` | ASSET_MANAGER | EMP-005 |
+| `admin@upstars.in` | COMPANY_ADMIN | EMP-004, full tenant access |
+| `hr@upstars.in` | HR_MANAGER | EMP-003 |
+| `manager@upstars.in` | MANAGER | EMP-002, manages EMP-001 |
+| `employee@upstars.in` | EMPLOYEE | EMP-001, holds the assigned phone |
+| `assets@upstars.in` | ASSET_MANAGER | EMP-005 |
 
 ```bash
 curl http://localhost:5001/api/health
 curl -X POST http://localhost:5001/api/v1/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"admin@upstars.local","password":"Admin@12345"}'
+  -d '{"email":"admin@upstars.in","password":"Ullas@Intern"}'
 ```
 
 Login returns `{ success, data: { token, user } }` where

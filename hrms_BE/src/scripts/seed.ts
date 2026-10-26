@@ -28,7 +28,7 @@ import {
 } from '../models';
 import { hashPassword } from '../utils/crypto';
 
-const PASSWORD = 'Admin@12345';
+const PASSWORD = 'Ullas@Intern';
 const TENANT_SLUG = 'upstars-demo';
 const YEAR = 2026;
 
@@ -99,19 +99,28 @@ async function main() {
     joining: string;
   }
   const people: Person[] = [
-    { number: 'EMP-004', name: 'Arjun Mehta', email: 'admin@upstars.local', role: 'COMPANY_ADMIN', department: 'Engineering', designation: 'Chief Executive', manager: null, joining: '2020-01-06' },
-    { number: 'EMP-003', name: 'Anita Desai', email: 'hr@upstars.local', role: 'HR_MANAGER', department: 'HR', designation: 'HR Manager', manager: 'EMP-004', joining: '2021-03-15' },
-    { number: 'EMP-002', name: 'Rahul Verma', email: 'manager@upstars.local', role: 'MANAGER', department: 'Engineering', designation: 'Engineering Manager', manager: 'EMP-004', joining: '2021-07-01' },
-    { number: 'EMP-001', name: 'Priya Sharma', email: 'employee@upstars.local', role: 'EMPLOYEE', department: 'Engineering', designation: 'Software Engineer', manager: 'EMP-002', joining: '2023-02-13' },
-    { number: 'EMP-005', name: 'Neha Iyer', email: 'assets@upstars.local', role: 'ASSET_MANAGER', department: 'HR', designation: 'Asset Coordinator', manager: 'EMP-003', joining: '2022-09-05' },
+    { number: 'EMP-004', name: 'MD Paizal', email: 'admin@upstars.in', role: 'COMPANY_ADMIN', department: 'Engineering', designation: 'Chief Executive', manager: null, joining: '2020-01-06' },
+    { number: 'EMP-003', name: 'Dhanush', email: 'hr@upstars.in', role: 'HR_MANAGER', department: 'HR', designation: 'HR Manager', manager: 'EMP-004', joining: '2021-03-15' },
+    { number: 'EMP-002', name: 'Jaishanth', email: 'manager@upstars.in', role: 'MANAGER', department: 'Engineering', designation: 'Engineering Manager', manager: 'EMP-004', joining: '2021-07-01' },
+    { number: 'EMP-001', name: 'Ullas Kumar', email: 'employee@upstars.in', role: 'EMPLOYEE', department: 'Engineering', designation: 'Software Engineer', manager: 'EMP-002', joining: '2023-02-13' },
+    { number: 'EMP-005', name: 'Neha Iyer', email: 'assets@upstars.in', role: 'ASSET_MANAGER', department: 'HR', designation: 'Asset Coordinator', manager: 'EMP-003', joining: '2022-09-05' },
   ];
 
   const employees = new Map<string, Row>();
   const users = new Map<string, Row>();
   for (const p of people) {
-    let user = await User.findOne({ where: { email: p.email } });
+    const legacyEmail = p.email.replace(/@upstars\.in$/i, '@upstars.local');
+    let user =
+      (await User.findOne({ where: { email: p.email } })) ??
+      (legacyEmail !== p.email ? await User.findOne({ where: { email: legacyEmail } }) : null);
     if (user) {
-      await user.update({ password_hash: passwordHash, full_name: p.name, tenant_id: tenantId, status: 'ACTIVE' });
+      await user.update({
+        email: p.email,
+        password_hash: passwordHash,
+        full_name: p.name,
+        tenant_id: tenantId,
+        status: 'ACTIVE',
+      });
     } else {
       user = await User.create({ ...T, email: p.email, password_hash: passwordHash, full_name: p.name });
     }

@@ -41,9 +41,9 @@ function toAuthUser(raw: unknown): AuthUser {
     name: str(r, 'name', 'full_name') ?? email,
     roles: strArr(r, 'roles'),
     permissions: strArr(r, 'permissions'),
-    employeeId: str(r, 'employee_id') ?? null,
-    tenantId: str(r, 'tenant_id') ?? null,
-    tenantName: str(r, 'tenant_name') ?? null,
+    employeeId: str(r, 'employee_id', 'employeeId') ?? null,
+    tenantId: str(r, 'tenant_id', 'tenantId') ?? null,
+    tenantName: str(r, 'tenant_name', 'tenantName') ?? null,
   };
 }
 

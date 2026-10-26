@@ -83,14 +83,38 @@ const config: Config = {
           '0%, 100%': { transform: 'translate3d(0, 0, 0)' },
           '50%': { transform: 'translate3d(0, -14px, 0)' },
         },
+        'glow-pulse': {
+          '0%, 100%': { opacity: '0.45' },
+          '50%': { opacity: '0.9' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
+        'float-slow': {
+          '0%, 100%': { transform: 'translate3d(0, 0, 0) scale(1)' },
+          '50%': { transform: 'translate3d(12px, -18px, 0) scale(1.05)' },
+        },
+        'spark-fade': {
+          '0%': { opacity: '1', transform: 'translate(-50%, -50%) scale(1)' },
+          '100%': { opacity: '0', transform: 'translate(-50%, -70%) scale(0.2)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.25s ease-out both',
         'fade-up': 'fade-up 0.4s ease-out both',
-        'scale-in': 'scale-in 0.2s ease-out both',
+        'scale-in': 'scale-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
         'slide-in-left': 'slide-in-left 0.25s ease-out both',
         'pulse-ring': 'pulse-ring 2s ease-out infinite',
         'drift': 'drift 7s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
+        'shimmer': 'shimmer 3.5s linear infinite',
+        'float-slow': 'float-slow 9s ease-in-out infinite',
+        'spark-fade': 'spark-fade 0.7s ease-out forwards',
+      },
+      backgroundImage: {
+        'auth-mesh':
+          'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,162,39,0.28), transparent 55%), radial-gradient(ellipse 70% 50% at 90% 20%, rgba(15,107,76,0.35), transparent 50%), radial-gradient(ellipse 60% 40% at 50% 100%, rgba(42,82,127,0.45), transparent 55%)',
       },
     },
   },

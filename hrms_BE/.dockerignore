@@ -1,0 +1,13 @@
+node_modules
+dist
+data
+uploads
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-*
+coverage
+.git
+*.log
+README.md

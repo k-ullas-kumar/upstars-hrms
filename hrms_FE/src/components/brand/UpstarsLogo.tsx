@@ -5,22 +5,23 @@ const LOGO_SRC = '/upstars-logo.png';
 interface UpstarsLogoProps {
   /** Visual size of the mark. */
   size?: 'sm' | 'md' | 'lg' | 'hero';
-  /** Show “HRMS” wordmark beside the logo. */
+  /** Show wordmark beside the logo. */
   withWordmark?: boolean;
-  /** Light text for dark backgrounds (sidebar / auth panel). */
+  /** Light subtitle text for dark backgrounds (sidebar / auth panel). */
   light?: boolean;
   className?: string;
   imgClassName?: string;
 }
 
+/** Height-based sizes; width stays natural so the mark isn’t forced into a circle. */
 const SIZE = {
-  sm: 'h-8 w-8',
-  md: 'h-10 w-10',
-  lg: 'h-14 w-14',
-  hero: 'h-28 w-28 sm:h-36 sm:w-36',
+  sm: 'h-8 w-auto',
+  md: 'h-10 w-auto',
+  lg: 'h-14 w-auto',
+  hero: 'h-28 w-auto sm:h-36',
 } as const;
 
-/** Official UPstars mark — gold laurel / UPS star on black. */
+/** Official UPSTARS mark — shown free, no circular crop or ring. */
 export function UpstarsLogo({
   size = 'md',
   withWordmark = false,
@@ -32,26 +33,27 @@ export function UpstarsLogo({
     <div className={cn('flex items-center gap-2.5', className)}>
       <img
         src={LOGO_SRC}
-        alt="UPstars"
-        className={cn(
-          SIZE[size],
-          'shrink-0 rounded-full object-cover shadow-lg shadow-black/40 ring-1 ring-gold/30',
-          imgClassName,
-        )}
+        alt="UPSTARS"
+        className={cn(SIZE[size], 'shrink-0 object-contain', imgClassName)}
         draggable={false}
       />
       {withWordmark && (
         <div className="leading-tight">
-          <p className={cn('font-semibold tracking-tight', light ? 'text-white' : 'text-navy', size === 'sm' ? 'text-sm' : 'text-base')}>
-            UP<span className="text-gold">stars</span>
+          <p
+            className={cn(
+              'font-bold uppercase tracking-[0.14em] text-gold',
+              size === 'sm' ? 'text-sm' : 'text-base',
+            )}
+          >
+            UPSTARS
           </p>
           <p
             className={cn(
-              'text-[10px] font-medium uppercase tracking-[0.22em]',
+              'max-w-[12rem] text-[9px] font-medium leading-snug tracking-wide',
               light ? 'text-navy-200' : 'text-slate-500',
             )}
           >
-            HRMS
+            Human Resource Management System
           </p>
         </div>
       )}

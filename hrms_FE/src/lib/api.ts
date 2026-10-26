@@ -1,13 +1,15 @@
 /**
  * Thin fetch wrapper for the HRMS backend.
- * - All paths are relative to `/api/v1` (Vite proxies `/api` -> http://localhost:5001).
+ * - Default base is `/api/v1` (Vite proxies `/api` in dev; nginx proxies in Docker).
+ * - Optional `VITE_API_BASE` (e.g. https://api.example.com) for split-host deploys.
  * - Bearer token is read from localStorage key `hrms_token`.
  * - Responses shaped `{ success, data }` are unwrapped.
  */
 
 export const TOKEN_KEY = 'hrms_token';
 export const UNAUTHORIZED_EVENT = 'hrms:unauthorized';
-const API_BASE = '/api/v1';
+const API_ORIGIN = String(import.meta.env.VITE_API_BASE ?? '').replace(/\/$/, '');
+const API_BASE = `${API_ORIGIN}/api/v1`;
 
 export class ApiError extends Error {
   readonly status: number;

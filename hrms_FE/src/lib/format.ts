@@ -30,6 +30,14 @@ export function todayIso(): string {
   return format(new Date(), 'yyyy-MM-dd');
 }
 
+/** Local-calendar day bounds as ISO datetimes (avoids UTC midnight cutting off early IST punches). */
+export function localDayBoundsIso(day = todayIso()): { from: string; to: string } {
+  const [y, m, d] = day.split('-').map(Number);
+  const start = new Date(y, m - 1, d, 0, 0, 0, 0);
+  const end = new Date(y, m - 1, d, 23, 59, 59, 999);
+  return { from: start.toISOString(), to: end.toISOString() };
+}
+
 export function titleCase(value: string | null | undefined): string {
   if (!value) return '—';
   return value

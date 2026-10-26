@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPstars HRMS — Complete End-to-End Tutorial</title>
+  <style>
+    :root {
+      --navy: #0B1F33;
+      --navy-700: #12304d;
+      --navy-200: #aabed6;
+      --gold: #C9A227;
+      --gold-100: #f5ecc2;
+      --brand: #0F6B4C;
+      --brand-50: #ecf8f3;
+      --slate: #64748b;
+      --line: #e2e8f0;
+      --bg: #ffffff;
+      --soft: #f8fafc;
+    }
+
+    * { box-sizing: border-box; }
+    html { font-size: 11.5pt; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--navy);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+
+    @page {
+      size: A4;
+      margin: 16mm 14mm 18mm 14mm;
+    }
+
+    .page-break { page-break-before: always; break-before: page; }
+    .avoid-break { page-break-inside: avoid; break-inside: avoid; }
+
+    /* ----- Cover ----- */
+    .cover {
+      min-height: 260mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28mm 10mm 18mm;
+      background:
+        radial-gradient(ellipse 80% 50% at 10% 0%, rgba(201,162,39,0.18), transparent 55%),
+        radial-gradient(ellipse 70% 45% at 100% 20%, rgba(15,107,76,0.12), transparent 50%),
+        linear-gradient(165deg, #0B1F33 0%, #12304d 48%, #0a4532 100%);
+      color: #fff;
+      border-radius: 0;
+      margin: -2mm -2mm 0;
+    }
+    .cover-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .cover-mark {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold), #e0c155);
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.5px;
+    }
+    .cover-brand h1 {
+      margin: 0;
+      font-size: 28pt;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      font-weight: 800;
+    }
+    .cover-brand p {
+      margin: 2px 0 0;
+      font-size: 11pt;
+      color: var(--navy-200);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .cover-hero { margin-top: 48px; max-width: 520px; }
+    .cover-hero h2 {
+      margin: 0 0 12px;
+      font-size: 26pt;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+    }
+    .cover-hero .lead {
+      font-size: 12.5pt;
+      color: #d5dfeb;
+      margin: 0 0 28px;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(201,162,39,0.45);
+      color: var(--gold-100);
+      font-size: 9.5pt;
+      font-weight: 600;
+    }
+    .cover-meta {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      font-size: 9.5pt;
+      color: #aabed6;
+    }
+    .cover-meta strong { display: block; color: var(--gold); font-size: 8.5pt; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+
+    /* ----- Content chrome ----- */
+    .doc { padding: 0 4mm; }
+    h1.section {
+      margin: 0 0 10px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid var(--gold);
+      font-size: 18pt;
+      color: var(--navy);
+    }
+    h2 {
+      margin: 22px 0 8px;
+      font-size: 13.5pt;
+      color: var(--navy);
+      border-left: 4px solid var(--gold);
+      padding-left: 10px;
+    }
+    h3 {
+      margin: 16px 0 6px;
+      font-size: 11.5pt;
+      color: var(--brand);
+    }
+    p { margin: 0 0 10px; color: #1e293b; }
+    ul, ol { margin: 0 0 12px; padding-left: 20px; }
+    li { margin-bottom: 4px; }
+    a { color: var(--brand); }
+
+    .toc a { text-decoration: none; color: var(--navy); }
+    .toc li { margin-bottom: 6px; }
+    .toc .num {
+      display: inline-block;
+      min-width: 22px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .callout {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 12px 0 16px;
+    }
+    .callout.green { border-left-color: var(--brand); background: var(--brand-50); }
+    .callout.navy {
+      border-left-color: var(--navy);
+      background: #eef2f7;
+    }
+    .callout strong.title { display: block; margin-bottom: 4px; color: var(--navy); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px;
+      font-size: 10pt;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td { background: var(--soft); }
+
+    .step {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 10px;
+      margin: 10px 0;
+      page-break-inside: avoid;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--gold);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12pt;
+    }
+    .step-body {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #fff;
+    }
+    .step-body strong { color: var(--navy); }
+
+    .kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      border: 1px solid #cbd5e1;
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 9.5pt;
+    }
+    .path {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 9.5pt;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--navy-700);
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0 16px;
+    }
+    .role-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+    .role-card header {
+      background: var(--navy);
+      color: var(--gold);
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 10.5pt;
+    }
+    .role-card .body { padding: 10px 12px; font-size: 10pt; }
+    .role-card .body p { margin: 0 0 6px; }
+
+    .faq dt {
+      font-weight: 700;
+      color: var(--navy);
+      margin-top: 12px;
+      padding: 8px 10px;
+      background: #eef2f7;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid var(--line);
+      border-bottom: none;
+    }
+    .faq dd {
+      margin: 0 0 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 0 0 6px 6px;
+      background: #fff;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      padding-top: 12px;
+      border-top: 2px solid var(--gold);
+      font-size: 9pt;
+      color: var(--slate);
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--gold-100);
+      color: #7d6119;
+      font-size: 8.5pt;
+      font-weight: 700;
+    }
+    .badge.green { background: var(--brand-50); color: var(--brand); }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== COVER ===================== -->
+  <section class="cover">
+    <div>
+      <div class="cover-brand">
+        <div class="cover-mark">UP</div>
+        <div>
+          <h1>UPSTARS</h1>
+          <p>Human Resource Management System</p>
+        </div>
+      </div>
+      <div class="cover-hero">
+        <h2>Complete End-to-End Tutorial &amp; User Guide</h2>
+        <p class="lead">
+          A practical walkthrough of every module, role, and daily workflow in the UPstars HRMS Platform —
+          with demo credentials, step-by-step examples, and FAQs.
+        </p>
+        <div class="pill-row">
+          <span class="pill">Multi-tenant SaaS MVP</span>
+          <span class="pill">JWT + RBAC</span>
+          <span class="pill">Attendance · Leave · Assets</span>
+          <span class="pill">People · Docs · Reports</span>
+        </div>
+      </div>
+    </div>
+    <div class="cover-meta">
+      <div>
+        <strong>Product</strong>
+        UPstars HRMS Platform
+      </div>
+      <div>
+        <strong>Local URLs</strong>
+        App :3000 · API :5001
+      </div>
+      <div>
+        <strong>Guide version</strong>
+        1.0 · October 2026
+      </div>
+    </div>
+  </section>
+
+  <div class="doc">
+
+  <!-- ===================== TOC ===================== -->
+  <section class="page-break">
+    <h1 class="section">Table of contents</h1>
+    <ol class="toc">
+      <li><span class="num">01</span> About this guide &amp; how to use the demo</li>
+      <li><span class="num">02</span> Getting started — sign in &amp; workspace tour</li>
+      <li><span class="num">03</span> Roles, users &amp; permissions</li>
+      <li><span class="num">04</span> Module catalogue (all resources)</li>
+      <li><span class="num">05</span> End-to-end guide — People &amp; organisation</li>
+      <li><span class="num">06</span> End-to-end guide — Attendance &amp; leave</li>
+      <li><span class="num">07</span> End-to-end guide — Assets, teams, tasks, documents</li>
+      <li><span class="num">08</span> End-to-end guide — Reports, settings &amp; audit</li>
+      <li><span class="num">09</span> Role playbooks (Admin · HR · Manager · Employee · Assets)</li>
+      <li><span class="num">10</span> Frequently asked questions (FAQs)</li>
+    </ol>
+    <div class="callout green">
+      <strong class="title">Theme note</strong>
+      This document uses the same visual language as the product: Navy <span class="path">#0B1F33</span>,
+      Gold <span class="path">#C9A227</span>, and Brand green <span class="path">#0F6B4C</span>.
+    </div>
+  </section>
+
+  <!-- ===================== 1 ===================== -->
+  <section class="page-break">
+    <h1 class="section">1. About this guide &amp; how to use the demo</h1>
+    <p>
+      UPstars HRMS is a standalone multi-tenant Human Resource Management System (not linked to the recruitment CRM).
+      The frontend is a React SPA; the backend is an Express + TypeScript modular monolith using Sequelize.
+    </p>
+    <h2>What you will learn</h2>
+    <ul>
+      <li>How every major screen works and who can open it</li>
+      <li>Complete check-in → work day → check-out flow (including the 5-second cancel shortcut)</li>
+      <li>How HR, managers, and admins approve leave, corrections, documents, and assets</li>
+      <li>How to run reports and read the audit trail</li>
+    </ul>
+    <h2>Local access</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>Folder</th><th>URL</th></tr></thead>
+      <tbody>
+        <tr><td>Web app</td><td class="path">hrms_FE</td><td>http://localhost:3000</td></tr>
+        <tr><td>API</td><td class="path">hrms_BE</td><td>http://localhost:5001/api/v1</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <strong class="title">Demo password (all seeded users)</strong>
+      <span class="kbd">Ullas@Intern</span> — emails end with <span class="path">@upstars.in</span>.
+    </div>
+  </section>
+
+  <!-- ===================== 2 ===================== -->
+  <section class="page-break">
+    <h1 class="section">2. Getting started — sign in &amp; workspace tour</h1>
+    <h2>Sign in</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Open</strong> http://localhost:3000 — you land on the branded login screen (UPSTARS gold wordmark, navy atmosphere, soft cursor glow).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Enter</strong> a demo email (e.g. <span class="path">employee@upstars.in</span>) and password <span class="kbd">Ullas@Intern</span>.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Submit</strong> — the API returns a JWT and your roles/permissions. The app stores the token and loads the protected shell.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Forgot password</strong> — use <span class="path">/forgot-password</span> then <span class="path">/reset-password</span> when a reset token is issued (demo environments may log the link server-side).</div></div>
+
+    <h2>Workspace layout</h2>
+    <table>
+      <thead><tr><th>Area</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>Left sidebar</td><td>Module navigation filtered by your permissions</td></tr>
+        <tr><td>Top header</td><td>Search (coming soon), live attendance timer when checked in, <span class="badge">Check out</span> shortcut, notifications, Logout, profile menu</td></tr>
+        <tr><td>Main canvas</td><td>Dashboard KPIs and module pages</td></tr>
+      </tbody>
+    </table>
+    <div class="callout navy">
+      <strong class="title">Logout vs Check out</strong>
+      <strong>Logout</strong> signs you out immediately and does <em>not</em> punch attendance.
+      <strong>Check out</strong> (next to the running timer) starts a <strong>5-second cancel banner</strong>, then records check-out only.
+    </div>
+  </section>
+
+  <!-- ===================== 3 ===================== -->
+  <section class="page-break">
+    <h1 class="section">3. Roles, users &amp; permissions</h1>
+    <p>Access is role-based (RBAC). Menus and API routes require the matching permission key.</p>
+
+    <h2>Seeded demo users</h2>
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Typical focus</th></tr></thead>
+      <tbody>
+        <tr><td>MD Paizal</td><td>admin@upstars.in</td><td>Company Admin</td><td>Full org, settings, audit, all modules</td></tr>
+        <tr><td>Dhanush</td><td>hr@upstars.in</td><td>HR Manager</td><td>People, leave types, onboarding, docs, reports</td></tr>
+        <tr><td>Jaishanth</td><td>manager@upstars.in</td><td>Manager</td><td>Team attendance/leave approvals, tasks</td></tr>
+        <tr><td>Ullas Kumar</td><td>employee@upstars.in</td><td>Employee</td><td>Self check-in, leave request, tasks, own profile</td></tr>
+        <tr><td>Neha Iyer</td><td>assets@upstars.in</td><td>Asset Manager</td><td>Asset register, assign / return</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Permission families (summary)</h2>
+    <table>
+      <thead><tr><th>Family</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Employees / Org</td><td>employee:view/create/update/import · org:manage</td></tr>
+        <tr><td>Attendance</td><td>attendance:checkin · correct · approve · view_team</td></tr>
+        <tr><td>Leave</td><td>leave:request · approve · manage_types</td></tr>
+        <tr><td>Assets</td><td>asset:manage · asset:assign</td></tr>
+        <tr><td>Documents</td><td>document:manage · generate · approve</td></tr>
+        <tr><td>Teams / Onboarding</td><td>team:manage · onboarding:manage</td></tr>
+        <tr><td>Reports / Audit</td><td>report:view/export · audit:view</td></tr>
+      </tbody>
+    </table>
+    <div class="callout green">
+      <strong class="title">Tip</strong>
+      If a menu item is missing, your role does not include that permission — this is expected, not a bug.
+    </div>
+  </section>
+
+  <!-- ===================== 4 ===================== -->
+  <section class="page-break">
+    <h1 class="section">4. Module catalogue (all resources)</h1>
+    <table>
+      <thead><tr><th>Nav</th><th>Route</th><th>Primary resources</th></tr></thead>
+      <tbody>
+        <tr><td>Home</td><td class="path">/</td><td>Dashboard KPIs, snapshots</td></tr>
+        <tr><td>Employees</td><td class="path">/people/employees</td><td>Employee CRUD, detail, deactivate</td></tr>
+        <tr><td>Import</td><td class="path">/people/employees/import</td><td>CSV bulk import</td></tr>
+        <tr><td>Departments</td><td class="path">/people/departments</td><td>Org departments</td></tr>
+        <tr><td>Branches</td><td class="path">/people/branches</td><td>Office locations</td></tr>
+        <tr><td>Designations</td><td class="path">/people/designations</td><td>Job titles</td></tr>
+        <tr><td>Onboarding</td><td class="path">/people/onboarding</td><td>Checklists &amp; items</td></tr>
+        <tr><td>Attendance</td><td class="path">/attendance</td><td>Punch, corrections, team view, approvals</td></tr>
+        <tr><td>Leave</td><td class="path">/leave</td><td>Types, balances, requests, approvals</td></tr>
+        <tr><td>Assets</td><td class="path">/assets</td><td>Register, assignments lifecycle</td></tr>
+        <tr><td>Teams</td><td class="path">/teams</td><td>Teams &amp; memberships</td></tr>
+        <tr><td>Tasks</td><td class="path">/tasks</td><td>Work items / status</td></tr>
+        <tr><td>Documents</td><td class="path">/documents</td><td>Templates &amp; generated PDFs</td></tr>
+        <tr><td>Reports</td><td class="path">/reports</td><td>Attendance/leave/assets CSV exports</td></tr>
+        <tr><td>Company</td><td class="path">/settings/company</td><td>Tenant / company settings</td></tr>
+        <tr><td>Roles</td><td class="path">/settings/roles</td><td>Role &amp; permission matrix</td></tr>
+        <tr><td>Audit</td><td class="path">/audit</td><td>Immutable activity log</td></tr>
+      </tbody>
+    </table>
+    <p><span class="badge">Out of MVP</span> Payroll engine, recruitment ATS, chat, and sales CRM are intentionally not in this product.</p>
+  </section>
+
+  <!-- ===================== 5 ===================== -->
+  <section class="page-break">
+    <h1 class="section">5. End-to-end — People &amp; organisation</h1>
+
+    <h2>5.1 Organisation setup (Admin / HR)</h2>
+    <p>Example actor: <strong>admin@upstars.in</strong> or <strong>hr@upstars.in</strong>.</p>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Open <strong>People → Branches</strong>. Create or edit “HQ Bangalore” (or your city office).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Open <strong>Departments</strong>. Ensure Engineering, HR, Sales (or your structure) exist.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Open <strong>Designations</strong>. Add titles such as Software Engineer, HR Manager.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body">Open <strong>Settings → Company</strong> to confirm tenant name and timezone (demo uses Asia/Kolkata).</div></div>
+
+    <h2>5.2 Hire / create an employee</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Go to <strong>People → Employees →</strong> add employee (form modal).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Fill employee number, full name, email, department, designation, branch, joining date, manager.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Save — the person appears in the directory. Open the detail page for status, contacts, and related records.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Bulk path:</strong> <span class="path">/people/employees/import</span> — upload CSV, review mapping/errors, commit.</div></div>
+
+    <h2>5.3 Onboarding checklist</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Open <strong>People → Onboarding</strong> (needs <span class="path">onboarding:manage</span>).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Create or open a checklist; tick items (laptop issued, policy signed, accounts created).</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Track completion until the new joiner is marked ready for day-one attendance.</div></div>
+  </section>
+
+  <!-- ===================== 6 ===================== -->
+  <section class="page-break">
+    <h1 class="section">6. End-to-end — Attendance &amp; leave</h1>
+
+    <h2>6.1 Daily check-in (Employee)</h2>
+    <p>Example actor: <strong>employee@upstars.in</strong> (Ullas Kumar).</p>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Sign in → open <strong>Attendance</strong>.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Tap the large <strong>Check in</strong> control. Optionally share location when prompted (geofence may flag outside punches).</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Header updates live: timer shows <span class="path">HH:MM:SS</span> total for today. Status flips from “Not checked in”.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body">Work normally. Timer keeps counting without refreshing the page.</div></div>
+
+    <h2>6.2 Check-out shortcut (5-second cancel)</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body">In the header, click <span class="badge">Check out</span> beside the timer.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">A navy/gold banner appears: “Checking out in 5s”. Click <strong>Cancel</strong> if it was accidental.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">If you let the countdown finish, the API records <span class="path">CHECK_OUT</span>, the timer stops, and the shortcut hides.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body">You can also check out from the Attendance page punch control — same API, no countdown.</div></div>
+
+    <h2>6.3 Corrections &amp; approvals</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Employee: Attendance → Corrections → request a missed punch (date, type, time, reason).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Manager/HR: open Approvals tab → Approve or Reject with an optional note.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">On approve, a corrected attendance event is created and appears in history.</div></div>
+
+    <h2>6.4 Team attendance (Manager)</h2>
+    <p>Login as <strong>manager@upstars.in</strong> → Attendance → <strong>Team</strong> tab → pick a date → review punches for reports.</p>
+
+    <h2>6.5 Leave request → approve</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Employee:</strong> Leave → create request (type, from/to, reason). Balance is validated.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Manager/HR:</strong> Leave → Approvals → Approve/Reject.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>HR:</strong> manage leave types and opening balances when permitted.</div></div>
+    <div class="callout">
+      <strong class="title">Geofence</strong>
+      Admins can configure geofences under the API/settings path. Check-ins outside the fence may be flagged for review while still recorded.
+    </div>
+  </section>
+
+  <!-- ===================== 7 ===================== -->
+  <section class="page-break">
+    <h1 class="section">7. End-to-end — Assets, teams, tasks, documents</h1>
+
+    <h2>7.1 Assets lifecycle (Asset Manager)</h2>
+    <p>Actor: <strong>assets@upstars.in</strong>.</p>
+    <div class="step"><div class="step-num">1</div><div class="step-body">Open <strong>Assets</strong> → add a laptop/phone (tag, serial, category, status).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Assign to an employee → employee acknowledges → later mark return.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Track assignment history from the asset / assignment views.</div></div>
+
+    <h2>7.2 Teams &amp; tasks</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Teams:</strong> create a team, add members (manager needs team permissions).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Tasks:</strong> create tasks, assign owners, move status (open → in progress → done).</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Employees see tasks relevant to them on <span class="path">/tasks</span>.</div></div>
+
+    <h2>7.3 Documents</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-body">HR creates/maintains a <strong>document template</strong> (offer letter, experience letter, etc.).</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body">Generate a document for an employee → review → approve when required → download PDF.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body">Generated documents remain listed under Documents for auditability.</div></div>
+  </section>
+
+  <!-- ===================== 8 ===================== -->
+  <section class="page-break">
+    <h1 class="section">8. End-to-end — Reports, settings &amp; audit</h1>
+
+    <h2>8.1 Reports</h2>
+    <p>Open <strong>Reports</strong> (needs report permissions). Pick a pack such as Attendance, Leave, or Assets; set a date range when prompted; export CSV.</p>
+
+    <h2>8.2 Settings → Roles</h2>
+    <p>Company Admin opens <strong>Settings → Roles</strong> to inspect the permission matrix. Seeded roles (COMPANY_ADMIN, HR_MANAGER, MANAGER, EMPLOYEE, ASSET_MANAGER) are the source of truth from backend role definitions.</p>
+
+    <h2>8.3 Audit log</h2>
+    <p>Open <strong>Audit</strong> to see who changed what (create/update/approve/reject). Use this after sensitive actions (role changes, corrections, document approvals).</p>
+
+    <h2>8.4 Notifications</h2>
+    <p>The header bell shows in-app notifications (approvals, assignments). Mark as read from the menu.</p>
+  </section>
+
+  <!-- ===================== 9 ===================== -->
+  <section class="page-break">
+    <h1 class="section">9. Role playbooks — complete day-in-the-life</h1>
+
+    <div class="role-grid">
+      <div class="role-card">
+        <header>Company Admin — MD Paizal</header>
+        <div class="body">
+          <p><strong>Login:</strong> admin@upstars.in</p>
+          <ol>
+            <li>Review Dashboard KPIs</li>
+            <li>Confirm Company settings &amp; Roles</li>
+            <li>Spot-check Audit after HR changes</li>
+            <li>Export monthly Attendance report</li>
+          </ol>
+        </div>
+      </div>
+      <div class="role-card">
+        <header>HR Manager — Dhanush</header>
+        <div class="body">
+          <p><strong>Login:</strong> hr@upstars.in</p>
+          <ol>
+            <li>Add / import new joiners</li>
+            <li>Run onboarding checklist</li>
+            <li>Approve leave &amp; issue documents</li>
+            <li>Maintain leave types &amp; org masters</li>
+          </ol>
+        </div>
+      </div>
+      <div class="role-card">
+        <header>Manager — Jaishanth</header>
+        <div class="body">
+          <p><strong>Login:</strong> manager@upstars.in</p>
+          <ol>
+            <li>Own check-in for the day</li>
+            <li>Review Team attendance tab</li>
+            <li>Approve leave / corrections</li>
+            <li>Assign and track team tasks</li>
+          </ol>
+        </div>
+      </div>
+      <div class="role-card">
+        <header>Employee — Ullas Kumar</header>
+        <div class="body">
+          <p><strong>Login:</strong> employee@upstars.in</p>
+          <ol>
+            <li>Check in (share location if asked)</li>
+            <li>Work — watch header timer</li>
+            <li>Request leave or correction if needed</li>
+            <li>Check out via header shortcut (cancel within 5s if mis-click)</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="role-card avoid-break" style="margin-top:10px;">
+      <header>Asset Manager — Neha Iyer</header>
+      <div class="body">
+        <p><strong>Login:</strong> assets@upstars.in</p>
+        <ol>
+          <li>Register new hardware in Assets</li>
+          <li>Assign to employee → wait for acknowledgement</li>
+          <li>Process returns / update status</li>
+          <li>Use Reports → Assets when inventory reviews are due</li>
+        </ol>
+      </div>
+    </div>
+
+    <h2>Complete employee day (copy-paste scenario)</h2>
+    <ol>
+      <li>08:55 — Login as employee@upstars.in</li>
+      <li>09:00 — Attendance → Check in (allow location)</li>
+      <li>09:01 — Confirm header shows running timer + Check out button</li>
+      <li>12:30 — (Optional) Accidental Check out → Cancel within 5 seconds</li>
+      <li>14:00 — Leave → request 1 day Casual Leave next week</li>
+      <li>18:05 — Header Check out → let countdown finish</li>
+      <li>18:06 — Logout (session ends; attendance already closed)</li>
+      <li>Next morning — Manager approves the leave request</li>
+    </ol>
+  </section>
+
+  <!-- ===================== 10 FAQs ===================== -->
+  <section class="page-break">
+    <h1 class="section">10. Frequently asked questions (FAQs)</h1>
+    <dl class="faq">
+      <dt>Why does the header say “Not checked in” even after I punched?</dt>
+      <dd>Your user must be linked to an employee record (<span class="path">employeeId</span>). After a product update that fixed camelCase mapping, reload once, then punch again — the timer should update live without another refresh.</dd>
+
+      <dt>Does Logout also check me out?</dt>
+      <dd>No. Logout only ends the session. Use the header <strong>Check out</strong> button (or the Attendance page) to close your attendance.</dd>
+
+      <dt>What is the 5-second banner for?</dt>
+      <dd>It protects against accidental check-out from the header shortcut. Press Cancel to stay checked in. After 5 seconds the check-out is submitted.</dd>
+
+      <dt>I don’t see Employees / Settings / Audit in the menu.</dt>
+      <dd>Those links are permission-gated. Sign in with a role that has the required permission (e.g. admin or HR), or ask an admin to adjust roles under Settings → Roles.</dd>
+
+      <dt>Can I use this with the Recruitment CRM?</dt>
+      <dd>No — UPstars HRMS is a standalone product. It is not wired to the recruitment CRM repositories.</dd>
+
+      <dt>Which database does local demo use?</dt>
+      <dd>SQLite by default for easy localhost setup. Production can use PostgreSQL via Sequelize configuration.</dd>
+
+      <dt>My check-in was flagged.</dt>
+      <dd>Location was missing, inaccurate, or outside an active geofence. The punch is still stored; managers/HR can review flagged entries and corrections.</dd>
+
+      <dt>How do I reset a demo password?</dt>
+      <dd>Re-run the backend seed (<span class="path">npm run db:seed</span> in <span class="path">hrms_BE</span>) to restore <span class="kbd">Ullas@Intern</span> for all demo users, or use the forgot-password flow if enabled.</dd>
+
+      <dt>Where do API calls go?</dt>
+      <dd>Browser → <span class="path">/api/v1/…</span> with Bearer JWT. Backend middleware authenticates, enforces RBAC, then hits the matching service (attendance, leave, employees, …).</dd>
+
+      <dt>Is payroll / recruitment included?</dt>
+      <dd>Not in this MVP. Navigation intentionally omits payroll, recruitment ATS, chat, and sales CRM.</dd>
+
+      <dt>Timezone issues on “today’s” attendance?</dt>
+      <dd>The app uses your browser’s local calendar day for “today” bounds so early-morning punches (e.g. IST) are not cut off by UTC midnight.</dd>
+
+      <dt>Who can approve leave and attendance corrections?</dt>
+      <dd>Users with <span class="path">leave:approve</span> / <span class="path">attendance:approve</span> — typically Manager and HR roles in the seed data.</dd>
+
+      <dt>How do notifications work?</dt>
+      <dd>In-app notifications are listed from the header bell. They cover events such as approvals and assignments depending on what the backend emits.</dd>
+
+      <dt>Can multiple people be checked in on one account?</dt>
+      <dd>Attendance is scoped to the signed-in user’s linked employee. Each person should use their own login.</dd>
+
+      <dt>Where is the official product branding?</dt>
+      <dd>Login and shell use the UPstars wordmark in gold on navy, subtitle “Human Resource Management System” / “HRMS Platform”, without a circular logo treatment.</dd>
+    </dl>
+
+    <div class="footer-note">
+      UPstars HRMS · Complete Tutorial v1.0 · Navy / Gold brand system · For internal training &amp; demo use<br />
+      © UPstars — Human Resource Management System
+    </div>
+  </section>
+
+  </div>
+</body>
+</html>

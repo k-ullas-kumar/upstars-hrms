@@ -28,8 +28,9 @@ import { Tabs } from '../components/ui/Tabs';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { api, getErrorMessage } from '../lib/api';
+import { notifyAttendanceChanged } from '../lib/attendanceTime';
 import { cn } from '../lib/cn';
-import { fmtDate, fmtDuration, fmtTime, titleCase, todayIso } from '../lib/format';
+import { fmtDate, fmtDuration, fmtTime, localDayBoundsIso, titleCase, todayIso } from '../lib/format';
 import { listAll } from '../lib/listAll';
 import { isStatus, normAttendanceEvent, normCorrection } from '../lib/normalize';
 import { toPayload } from '../lib/payload';
@@ -171,15 +172,15 @@ function LocationPrompt({ onChoose, onClose }: { onChoose: (share: boolean) => v
   return (
     <Modal
       open
-      size="sm"
+      size="md"
       title="Share your location?"
       onClose={onClose}
       footer={
         <>
-          <Button variant="secondary" onClick={() => onChoose(false)}>
+          <Button variant="secondary" className="w-full sm:w-auto" onClick={() => onChoose(false)}>
             Continue without location
           </Button>
-          <Button onClick={() => onChoose(true)}>
+          <Button className="w-full sm:w-auto" onClick={() => onChoose(true)}>
             <MapPin className="h-4 w-4" aria-hidden /> Allow &amp; continue
           </Button>
         </>
@@ -256,6 +257,7 @@ function PunchCard({
       });
       toast.success(checkedIn ? 'Checked out. Have a great evening!' : 'Checked in. Have a productive day!');
       onPunched();
+      notifyAttendanceChanged();
     } catch (error) {
       setLocating(false);
       const message = getErrorMessage(error, 'Could not record attendance');
@@ -530,9 +532,11 @@ export function AttendancePage() {
   const lookups = useLookups(['employees'], canApprove || canViewTeam);
   const employees = (lookups.data ?? EMPTY_LOOKUPS).employees;
 
-  const from = format(subDays(new Date(), 31), 'yyyy-MM-dd');
+  const historyFrom = localDayBoundsIso(format(subDays(new Date(), 31), 'yyyy-MM-dd')).from;
+  const historyTo = localDayBoundsIso().to;
+  const teamBounds = localDayBoundsIso(teamDate);
   const events = useApi(
-    (signal) => listAll('/attendance/events', normAttendanceEvent, { from, to: todayIso() }, signal),
+    (signal) => listAll('/attendance/events', normAttendanceEvent, { from: historyFrom, to: historyTo }, signal),
     [],
     canPunch || canCorrect,
   );
@@ -542,7 +546,13 @@ export function AttendancePage() {
     canCorrect || canApprove,
   );
   const team = useApi(
-    (signal) => listAll('/attendance/events', normAttendanceEvent, { scope: 'team', date: teamDate, from: teamDate, to: teamDate }, signal),
+    (signal) =>
+      listAll('/attendance/events', normAttendanceEvent, {
+        scope: 'team',
+        date: teamDate,
+        from: teamBounds.from,
+        to: teamBounds.to,
+      }, signal),
     [teamDate],
     canViewTeam && tab === 'team',
   );

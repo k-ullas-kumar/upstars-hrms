@@ -4,6 +4,8 @@ build/
 .env
 .env.*
 !.env.example
+!.env.deploy.example
+.env.deploy
 uploads/
 data/
 *.sqlite

@@ -112,8 +112,15 @@ export async function listEvents(ctx: RequestCtx, query: Record<string, unknown>
   const ids = await resolveScope(ctx, query);
   const where: WhereOptions[] = [{ tenant_id: ctx.tenantId }];
   if (ids) where.push({ employee_id: { [Op.in]: ids } });
-  if (typeof query.from === 'string' && query.from) where.push({ timestamp: { [Op.gte]: new Date(`${query.from}T00:00:00.000Z`) } });
-  if (typeof query.to === 'string' && query.to) where.push({ timestamp: { [Op.lte]: new Date(`${query.to}T23:59:59.999Z`) } });
+  // Accept YYYY-MM-DD (UTC day) or full ISO datetimes (preferred — FE sends local-day bounds).
+  if (typeof query.from === 'string' && query.from) {
+    const from = query.from.length <= 10 ? new Date(`${query.from}T00:00:00.000Z`) : new Date(query.from);
+    if (!Number.isNaN(from.getTime())) where.push({ timestamp: { [Op.gte]: from } });
+  }
+  if (typeof query.to === 'string' && query.to) {
+    const to = query.to.length <= 10 ? new Date(`${query.to}T23:59:59.999Z`) : new Date(query.to);
+    if (!Number.isNaN(to.getTime())) where.push({ timestamp: { [Op.lte]: to } });
+  }
 
   const { rows, count } = await AttendanceEvent.findAndCountAll({
     where: { [Op.and]: where },
